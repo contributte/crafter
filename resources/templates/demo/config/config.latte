@@ -1,0 +1,21 @@
+# ======================================
+# Config ===============================
+php:
+	date.timezone: Europe/Prague
+	# session.save_path: %tempDir%/session
+
+# ======================================
+# Extension ============================
+extensions:
+	sentry: Contributte\Sentry\DI\SentryExtension
+
+sentry:
+	enable: %productionMode%
+
+	client:
+		dsn: "https://FILLME@FILLME.ingest.sentry.io/1FILLME"
+
+# ======================================
+# Services =============================
+services:
+	# myservice: App\Model\MyService

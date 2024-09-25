@@ -1,0 +1,5 @@
+{
+	"main": "bin/mate.php",
+	"chmod": "0775",
+	"output": "dist/mate.phar"
+}

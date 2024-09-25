@@ -1,0 +1,50 @@
+app:
+	namespace: App
+
+	class:
+		entity:
+			baseClass: App\Model\Database\Entity\AbstractEntity
+		repository:
+			baseClass: App\Model\Database\Repository\AbstractRepository
+		handler:
+			dependencies:
+				em: Doctrine\ORM\EntityManagerInterface
+
+data:
+	user:
+		class:
+			# Database
+			- { type: entity, class: App\Domain\User\Database\User }
+			- { type: repository, class: App\Domain\User\Database\UserRepository }
+			# CQRS
+			- { type: command, class: App\Domain\User\CreateUserCommand }
+			- { type: handler, class: App\Domain\User\CreateUserHandler }
+			# API (create)
+			- { type: controller, flavor: create, class: App\Api\User\Create\CreateUserController }
+			- { type: request, flavor: create, class: App\Api\User\Create\CreateUserRequest }
+			- { type: request_body, flavor: create, class: App\Api\User\Create\CreateUserBody }
+			- { type: response, flavor: create, class: App\Api\User\Create\CreateUserResponse }
+			# API (update)
+			- { type: controller, flavor: update, class: App\Api\User\Update\UpdateUserController }
+			- { type: request, flavor: update, class: App\Api\User\Update\UpdateUserRequest }
+			- { type: request_body, flavor: update, class: App\Api\User\Update\UpdateUserBody }
+			- { type: response, flavor: update, class: App\Api\User\Update\UpdateUserResponse }
+			# API (get)
+			- { type: controller, flavor: get, class: App\Api\User\Get\GetUserController }
+			- { type: request, flavor: get, class: App\Api\User\Get\GetUserRequest }
+			- { type: response, flavor: get, class: App\Api\User\Get\GetUserResponse }
+			# API (list)
+			- { type: controller, flavor: list, class: App\Api\User\List\ListUserController }
+			- { type: request, flavor: list,class: App\Api\User\List\ListUserRequest }
+			- { type: request_filter, flavor: list,class: App\Api\User\List\ListUserFilter }
+			- { type: response, flavor: list,class: App\Api\User\List\ListUserResponse }
+			# API (delete)
+			- { type: controller, flavor: delete, class: App\Api\User\Delete\DeleteUserController }
+			- { type: response, flavor: delete,class: App\Api\User\Delete\DeleteUserResponse }
+
+		fields:
+			username: {type: string}
+			email: {type: string}
+			password: {type: string}
+			createdAt: {type: Nette\Utils\DateTime}
+			updatedAt: {type: Nette\Utils\DateTime}

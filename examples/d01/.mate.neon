@@ -1,0 +1,8 @@
+data:
+	user:
+		fields:
+			username: {type: string}
+			email: {type: string}
+			password: {type: string}
+			createdAt: {type: Nette\Utils\DateTime}
+			updatedAt: {type: Nette\Utils\DateTime}
