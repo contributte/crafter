@@ -10,21 +10,21 @@ on:
     - cron: "0 8 * * 1"
 
 jobs:
-  test81:
+  test83:
     name: "Nette Tester"
     uses: contributte/.github/.github/workflows/nette-tester.yml@v1
     with:
-      php: "8.1"
+      php: "8.3"
 
-  test80:
+  test82:
     name: "Nette Tester"
     uses: contributte/.github/.github/workflows/nette-tester.yml@v1
     with:
-      php: "8.0"
+      php: "8.2"
 
   testlower:
     name: "Nette Tester"
     uses: contributte/.github/.github/workflows/nette-tester.yml@v1
     with:
-      php: "8.0"
+      php: "8.2"
       composer: "composer update --no-interaction --no-progress --prefer-dist --prefer-stable --prefer-lowest"
