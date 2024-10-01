@@ -11,6 +11,7 @@ use Contributte\Mate\Crafter\Template\TemplateContext;
 use Contributte\Mate\Exception\LogicalException;
 use Contributte\Mate\Template\TemplateRenderer;
 use Contributte\Mate\Utils\Classes;
+use Nette\Safe;
 use Nette\Utils\Arrays;
 use Nette\Utils\FileSystem;
 use Nette\Utils\Strings;
@@ -78,8 +79,8 @@ final class CrafterWorker
 				);
 
 				// Craft (input & output)
-				$intputFile = __DIR__ . '/../../../resources/presets/moderntv/' . $crafter->template;
-				$outputFile = $workerContext->mate->process->cwd . '/' . lcfirst($resolvedFilename) . '.php';
+				$intputFile = Safe::realpath($crafter->template);
+				$outputFile = Safe::realpath($workerContext->mate->process->cwd . '/' . lcfirst($resolvedFilename) . '.php');
 
 				$outputContent = $this->templateRenderer->renderFile(
 					file: $intputFile,
