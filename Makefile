@@ -29,4 +29,4 @@ else
 endif
 
 compile:
-
+	vendor/bin/box compile
