@@ -9,6 +9,7 @@ use Nette\Safe;
 use Nette\Schema\Expect;
 use Nette\Schema\Processor;
 use Nette\Schema\ValidationException;
+use Nette\Utils\Arrays;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -103,6 +104,8 @@ final class CraftCommand extends BaseCommand
 				['Note', $item['note']],
 			]);
 		}
+
+		$ui->info(sprintf('Crafted: %d files', count(Arrays::filter($result->items, fn ($item) => $item['state'] === 'crafted'))));
 
 		return Command::SUCCESS;
 	}
