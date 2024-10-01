@@ -49,6 +49,10 @@
       "Tests\\": "tests"
     }
   },
+  "bin": [
+    "bin/mate",
+    "bin/mate.php"
+  ],
   "minimum-stability": "dev",
   "prefer-stable": true,
   "config": {
