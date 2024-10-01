@@ -44,7 +44,7 @@ final class CraftCommand extends BaseCommand
 		try {
 			/** @var object{ struct: string, scope: string[] } $options */
 			$options = (new Processor())->process(Expect::structure([
-				'struct' => Expect::mixed()->assert(fn ($v) => $v === null || $v === '', 'Option --struct|-s must be filled'),
+				'struct' => Expect::mixed()->assert(fn ($v) => $v !== null && $v !== '', 'Option --struct|-s must be filled'),
 				'scope' => Expect::arrayOf('string')->default([]),
 			])->otherItems(), $input->getOptions());
 		} catch (ValidationException $e) {
