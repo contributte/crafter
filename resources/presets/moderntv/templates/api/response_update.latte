@@ -1,0 +1,20 @@
+<?php
+
+declare(strict_types = 1);
+
+namespace {$ctx->class->namespace};
+
+use Contributte\FrameX\Http\EntityResponse;
+
+final class {$ctx->class->className} extends EntityResponse
+{
+
+    public static function of({$ctx->helper->dtoClassName} $dto): self
+    {
+        $self = self::create();
+        $self->payload = $dto;
+
+        return $self;
+    }
+
+}

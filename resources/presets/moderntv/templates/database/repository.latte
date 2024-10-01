@@ -1,0 +1,23 @@
+<?php
+
+declare(strict_types = 1);
+
+namespace {$ctx->class->namespace};
+
+use App\Model\Database\Repository\AbstractRepository;
+use Doctrine\ORM\EntityManagerInterface;
+
+/**
+ * @extends AbstractRepository<{$ctx->class->className}>
+ */
+class {$ctx->class->className} extends AbstractRepository
+{
+
+	public function __construct(
+		EntityManagerInterface $em
+	)
+	{
+		parent::__construct($em->getRepository({$ctx->class->className|replace('Repository', '')}::class));
+	}
+
+}

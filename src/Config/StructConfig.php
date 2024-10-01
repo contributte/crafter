@@ -2,13 +2,15 @@
 
 namespace Contributte\Mate\Config;
 
-final class DataField
+final class StructConfig
 {
 
+	/**
+	 * @param StructFieldConfig[] $fields
+	 */
 	public function __construct(
 		public string $name,
-		public string $type,
-		public bool $nullable = false,
+		public array $fields,
 	)
 	{
 	}

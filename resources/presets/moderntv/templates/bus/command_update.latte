@@ -1,0 +1,17 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {$ctx->class->namespace};
+
+readonly class {$ctx->class->className}
+{
+
+	public function __construct(
+		{foreach $ctx->struct->fields as $field}
+		public {$field->type}|null ${$field->name};
+		{/foreach}
+	) {
+	}
+
+}

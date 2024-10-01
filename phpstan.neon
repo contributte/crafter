@@ -16,5 +16,34 @@ parameters:
 
 	paths:
 		- src
+		- bin
 
 	ignoreErrors:
+
+	typeAliases:
+		ConfigShape: """
+			array{
+				app: array{
+					appDir: string,
+					namespace: string,
+					scopes: array<string>|null,
+					crafters: array<array{
+						crafter: string,
+						template: string,
+						class: string,
+						mode: string|null,
+						scopes: array<string>|null,
+						baseClass: string|null
+					}>|null
+				},
+				mate: array{
+					presets: array<string>|null
+				},
+				structs: array<string, array{
+					fields: array<string, array{
+						type: string,
+						nullable: bool|null
+					}>|null
+				}>|null
+			}
+		"""

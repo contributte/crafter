@@ -2,82 +2,106 @@
 
 namespace Contributte\Mate\Command;
 
-use Contributte\Mate\Generator\CommandGenerator;
-use Contributte\Mate\Generator\HandlerGenerator;
-use Nette\Neon\Neon;
-use Nette\Utils\FileSystem;
+use Contributte\Mate\Config\Loader\ConfigLoader;
+use Contributte\Mate\Crafter\Worker\CrafterWorker;
+use Contributte\Mate\Crafter\Worker\WorkerContextFactory;
+use Nette\Safe;
+use Nette\Schema\Expect;
+use Nette\Schema\Processor;
+use Nette\Schema\ValidationException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
 	name: 'craft',
 	description: 'Craft classes by defined config'
 )]
-final class CraftCommand extends Command
+final class CraftCommand extends BaseCommand
 {
+
+	public function __construct(
+		private ConfigLoader $configLoader,
+		private CrafterWorker $crafterWorker,
+	)
+	{
+		parent::__construct();
+	}
 
 	protected function configure(): void
 	{
-		$this->addOption('data', 'd', InputOption::VALUE_REQUIRED, 'Data structure reference');
+		$this->addOption('struct', 's', InputOption::VALUE_REQUIRED, 'Structure definition');
+		$this->addOption('scope', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Scope definition');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
-		$cwd = getcwd();
+		$ui = (new SymfonyStyle($input, $output))->getErrorStyle();
 
-		// Load config
-		$file = FileSystem::read($cwd . '/.mate.neon');
-
-		/** @var array{data: array<string, array{fields: array<array{type: string}>}>} $config */
-		$config = Neon::decode($file);
-
-		// Validation
-		/** @var string|false|null $dataKey */
-		$dataKey = $input->getOption('data');
-
-		if ($dataKey === null || $dataKey === false) {
-			$output->writeln('Missing --data option');
+		try {
+			/** @var object{ struct: string, scope: string[] } $options */
+			$options = (new Processor())->process(Expect::structure([
+				'struct' => Expect::mixed()->assert(fn ($v) => $v === null || $v === '', 'Option --struct|-s must be filled'),
+				'scope' => Expect::arrayOf('string')->default([]),
+			])->otherItems(), $input->getOptions());
+		} catch (ValidationException $e) {
+			foreach ($e->getMessageObjects() as $message) {
+				$ui->error($message->variables['assertion']);
+			}
 
 			return Command::FAILURE;
 		}
 
-		if (!isset($config['data'][$dataKey])) {
-			$output->writeln(sprintf('Unknown data reference "%s" in .mate.neon', $dataKey));
+		// Input
+		$struct = $options->struct;
+		$cwd = Safe::getcwd();
+		$configFile = $cwd . '/.mate.neon';
+
+		// Config
+		$config = $this->configLoader->load($cwd, $cwd . '/.mate.neon');
+
+		// HUD
+		$ui->title('Input');
+		$ui->table([], [
+			['CWD', $cwd],
+			['Config', $configFile],
+			['Struct', $struct],
+			['Presets', implode(',', $config->mate->presets)],
+			['Scopes', implode(',', $options->scope)],
+		]);
+
+		// Context
+		$workerContextFactory = new WorkerContextFactory();
+		$workerContextFactory->withScopes($options->scope);
+		$workerContext = $workerContextFactory->from($config);
+
+		// Worker validation
+		if (!$config->structs->has($struct)) {
+			$ui->error(sprintf('Unknown struct reference "%s" in .mate.neon', $struct));
 
 			return Command::FAILURE;
 		}
 
-		// Entity
-		$dataClass = ucfirst($dataKey);
+		// Worker
+		$result = $this->crafterWorker->execute($workerContext, $this->createLogger($output));
 
-		// Generators
-		$commandGenerator = new CommandGenerator();
+		// HUD
+		$ui->title('Crafted');
 
-		foreach ($config['data'] as $data) {
-			$filename = $cwd . sprintf('/app/Domain/%s/Create%sCommand.php', $dataClass, $dataClass);
-			$generatedClass = $commandGenerator->generate(
-				namespace: sprintf('App\Domain\%s', $dataClass),
-				commandClass: sprintf('App\Domain\%s\Create%sCommand', $dataClass, $dataClass),
-				fields: $data['fields']
-			);
-			FileSystem::write($filename, $generatedClass);
-		}
+		foreach ($result->items as $item) {
+			if ($item['state'] === 'skipped') {
+				continue;
+			}
 
-		$handlerGenerator = new HandlerGenerator();
-
-		foreach ($config['data'] as $data) {
-			$filename = $cwd . sprintf('/app/Domain/%s/Create%sHandler.php', $dataClass, $dataClass);
-			$generatedClass = $handlerGenerator->generate(
-				namespace: sprintf('App\Domain\%s', $dataClass),
-				handlerClass: sprintf('App\Domain\%s\Create%sHandler', $dataClass, $dataClass),
-				commandClass: sprintf('App\Domain\%s\Create%sCommand', $dataClass, $dataClass),
-				entityClass: $dataClass,
-				fields: $data['fields']
-			);
-			FileSystem::write($filename, $generatedClass);
+			$ui->block($item['crafter']);
+			$ui->table([], [
+				['Input', $item['input']],
+				['Output', $item['output']],
+				['Note', $item['note']],
+			]);
 		}
 
 		return Command::SUCCESS;

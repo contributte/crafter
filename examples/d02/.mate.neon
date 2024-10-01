@@ -1,50 +1,51 @@
 app:
 	namespace: App
 
-	class:
-		entity:
-			baseClass: App\Model\Database\Entity\AbstractEntity
-		repository:
-			baseClass: App\Model\Database\Repository\AbstractRepository
-		handler:
-			dependencies:
-				em: Doctrine\ORM\EntityManagerInterface
+	craft:
+		# Database
+		- { category: database, type: entity, class: "App\Domain\${name|ucfirst}\Database\${name|ucfirst}", baseClass: App\Model\Database\Entity\AbstractEntity }
+		- { category: database, type: repository, class: "App\Domain\${name|ucfirst}\Database\${name|ucfirst}Repository", baseClass: App\Model\Database\Repository\AbstractRepository }
+		# Domain
+		- { category: domain, type: command, flavor: create, class: "App\Domain\${name|ucfirst}\Create${name|ucfirst}Command" }
+		- { category: domain, type: handler, flavor: create, class: "App\Domain\${name|ucfirst}\Create${name|ucfirst}Handler", dependencies: { em: Doctrine\ORM\EntityManagerInterface } }
+		- { category: domain, type: command, flavor: update, class: "App\Domain\${name|ucfirst}\Update${name|ucfirst}Command" }
+		- { category: domain, type: handler, flavor: update, class: "App\Domain\${name|ucfirst}\Update${name|ucfirst}Handler", dependencies: { em: Doctrine\ORM\EntityManagerInterface } }
+		- { category: domain, type: command, flavor: get, class: "App\Domain\${name|ucfirst}\Get${name|ucfirst}Command" }
+		- { category: domain, type: handler, flavor: get, class: "App\Domain\${name|ucfirst}\Get${name|ucfirst}Handler", dependencies: { em: Doctrine\ORM\EntityManagerInterface } }
+		- { category: domain, type: command, flavor: list, class: "App\Domain\${name|ucfirst}\List${name|ucfirst}Command" }
+		- { category: domain, type: handler, flavor: list, class: "App\Domain\${name|ucfirst}\List${name|ucfirst}Handler", dependencies: { em: Doctrine\ORM\EntityManagerInterface } }
+		- { category: domain, type: command, flavor: delete, class: "App\Domain\${name|ucfirst}\Delete${name|ucfirst}Command" }
+		- { category: domain, type: handler, flavor: delete, class: "App\Domain\${name|ucfirst}\Delete${name|ucfirst}Handler", dependencies: { em: Doctrine\ORM\EntityManagerInterface } }
+		# API (create)
+		- { category: api, type: controller, flavor: create, class: "App\Api\${name|ucfirst}\Create\Create${name|ucfirst}Controller" }
+		- { category: api, type: request, flavor: create, class: "App\Api\${name|ucfirst}\Create\Create${name|ucfirst}Request" }
+		- { category: api, type: request_body, flavor: create, class: "App\Api\${name|ucfirst}\Create\Create${name|ucfirst}Body" }
+		- { category: api, type: response, flavor: create, class: "App\Api\${name|ucfirst}\Create\Create${name|ucfirst}Response" }
+		# API (update)
+		- { category: api, type: controller, flavor: update, class: "App\Api\${name|ucfirst}\Update\Update${name|ucfirst}Controller" }
+		- { category: api, type: request, flavor: update, class: "App\Api\${name|ucfirst}\Update\Update${name|ucfirst}Request" }
+		- { category: api, type: request_body, flavor: update, class: "App\Api\${name|ucfirst}\Update\Update${name|ucfirst}Body" }
+		- { category: api, type: response, flavor: update, class: "App\Api\${name|ucfirst}\Update\Update${name|ucfirst}Response" }
+		# API (get)
+		- { category: api, type: controller, flavor: get, class: "App\Api\${name|ucfirst}\Get\Get${name|ucfirst}Controller" }
+		- { category: api, type: request, flavor: get, class: "App\Api\${name|ucfirst}\Get\Get${name|ucfirst}Request" }
+		- { category: api, type: response, flavor: get, class: "App\Api\${name|ucfirst}\Get\Get${name|ucfirst}Response" }
+		# API (list)
+		- { category: api, type: controller, flavor: list, class: "App\Api\${name|ucfirst}\List\List${name|ucfirst}Controller" }
+		- { category: api, type: request, flavor: list,class: "App\Api\${name|ucfirst}\List\List${name|ucfirst}Request" }
+		- { category: api, type: request_filter, flavor: list,class: "App\Api\${name|ucfirst}\List\List${name|ucfirst}Filter" }
+		- { category: api, type: response, flavor: list,class: "App\Api\${name|ucfirst}\List\List${name|ucfirst}Response" }
+		# API (delete)
+		- { category: api, type: controller, flavor: delete, class: "App\Api\${name|ucfirst}\Delete\Delete${name|ucfirst}Controller" }
+		- { category: api, type: response, flavor: delete,class: "App\Api\${name|ucfirst}\Delete\Delete${name|ucfirst}Response" }
 
 data:
 	user:
-		class:
-			# Database
-			- { type: entity, class: App\Domain\User\Database\User }
-			- { type: repository, class: App\Domain\User\Database\UserRepository }
-			# CQRS
-			- { type: command, class: App\Domain\User\CreateUserCommand }
-			- { type: handler, class: App\Domain\User\CreateUserHandler }
-			# API (create)
-			- { type: controller, flavor: create, class: App\Api\User\Create\CreateUserController }
-			- { type: request, flavor: create, class: App\Api\User\Create\CreateUserRequest }
-			- { type: request_body, flavor: create, class: App\Api\User\Create\CreateUserBody }
-			- { type: response, flavor: create, class: App\Api\User\Create\CreateUserResponse }
-			# API (update)
-			- { type: controller, flavor: update, class: App\Api\User\Update\UpdateUserController }
-			- { type: request, flavor: update, class: App\Api\User\Update\UpdateUserRequest }
-			- { type: request_body, flavor: update, class: App\Api\User\Update\UpdateUserBody }
-			- { type: response, flavor: update, class: App\Api\User\Update\UpdateUserResponse }
-			# API (get)
-			- { type: controller, flavor: get, class: App\Api\User\Get\GetUserController }
-			- { type: request, flavor: get, class: App\Api\User\Get\GetUserRequest }
-			- { type: response, flavor: get, class: App\Api\User\Get\GetUserResponse }
-			# API (list)
-			- { type: controller, flavor: list, class: App\Api\User\List\ListUserController }
-			- { type: request, flavor: list,class: App\Api\User\List\ListUserRequest }
-			- { type: request_filter, flavor: list,class: App\Api\User\List\ListUserFilter }
-			- { type: response, flavor: list,class: App\Api\User\List\ListUserResponse }
-			# API (delete)
-			- { type: controller, flavor: delete, class: App\Api\User\Delete\DeleteUserController }
-			- { type: response, flavor: delete,class: App\Api\User\Delete\DeleteUserResponse }
-
+		name: user
+		craft: [api, domain, database]
 		fields:
 			username: {type: string}
 			email: {type: string}
 			password: {type: string}
-			createdAt: {type: Nette\Utils\DateTime}
+			createdAt: {type: Nette\Utils\DateTime }
 			updatedAt: {type: Nette\Utils\DateTime}

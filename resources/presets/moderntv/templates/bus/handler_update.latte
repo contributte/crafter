@@ -1,0 +1,45 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {$ctx->class->namespace};
+
+use App\Model\Bus\Result\Result;
+use App\Model\Exception\Runtime\EntityNotFoundException;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+
+#[AsMessageHandler]
+readonly class {$ctx->class->className}
+{
+
+	public function __construct(
+		private EntityManagerInterface $em,
+		private EventDispatcherInterface $ed,
+	) {
+	}
+
+	public function __invoke({$ctx->class->className|replace('Handler', 'Command')} $command): Result
+	{
+		{$ctx->helper->structVar} = $this->em->getRepository({$ctx->helper->entityClassName}::class)->findOneBy(['id' => $command->id]);
+
+		if ({$ctx->helper->structVar} === null) {
+			throw EntityNotFoundException::notFoundByUiid({$ctx->helper->entityClassName}::class, $command->id);
+		}
+
+		{foreach $ctx->struct->fields as $field}
+		if ($command->{$field->name} !== null) {
+		{$ctx->helper->structVar}->{$field->name} = $command->{$field->name};
+		}
+		{/foreach}
+
+		$this->em->persist({$ctx->helper->structVar});
+		$this->em->flush();
+
+		// $this->ed->dispatch(new {$ctx->helper->entityClassName}UpdatedEvent({$ctx->helper->structVar}));
+
+		return Result::from({$ctx->helper->structVar});
+	}
+
+}

@@ -1,0 +1,29 @@
+<?php
+
+declare(strict_types = 1);
+
+namespace {$ctx->class->namespace};
+
+use App\Model\Database\Entity\AbstractEntity;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Table;
+
+#[Entity]
+#[Table(name: '{$ctx->class->className|lower}')]
+class {$ctx->class->className} extends {$ctx->class->extends}
+{
+
+	{foreach $ctx->struct->fields as $field}
+	#[Column(type: '{$field->type}')]
+	private {$field->type} ${$field->name};
+
+	{/foreach}
+	public function __construct(
+		// TODO - generated code
+	)
+	{
+		// TODO - generated code
+	}
+
+}

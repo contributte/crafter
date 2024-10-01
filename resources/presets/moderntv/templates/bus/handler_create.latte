@@ -1,0 +1,44 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {$ctx->class->namespace};
+
+use App\Model\Bus\Result\Result;
+use App\Model\Exception\Runtime\EntityExistsException;
+use App\Model\Exception\Runtime\EntityNotFoundException;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+
+#[AsMessageHandler]
+readonly class {$ctx->class->className}
+{
+
+	public function __construct(
+		private EntityManagerInterface $em,
+		private EventDispatcherInterface $ed,
+	) {
+	}
+
+	public function __invoke({$ctx->class->className|replace('Handler', 'Command')} $command): Result
+	{
+		{$ctx->helper->structVar} = new {$ctx->helper->entityClassName}();
+		{foreach $ctx->struct->fields as $field}
+		{$ctx->helper->structVar}->{$field->name} = $command->{$field->name};
+		{/foreach}
+
+		try {
+			$this->em->persist({$ctx->helper->structVar});
+			$this->em->flush();
+		} catch (UniqueConstraintViolationException $e) {
+			throw EntityExistsException::alreadyExists({$ctx->helper->entityClassName}::class, $e);
+		}
+
+		// $this->ed->dispatch(new {$ctx->helper->entityClassName}CreatedEvent({$ctx->helper->structVar}));
+
+		return Result::from({$ctx->helper->structVar});
+	}
+
+}

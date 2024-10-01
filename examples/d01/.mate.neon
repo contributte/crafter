@@ -1,4 +1,10 @@
-data:
+mate:
+	presets: [moderntv]
+
+app:
+	scopes: [database, bus, api]
+
+structs:
 	user:
 		fields:
 			username: {type: string}
@@ -6,3 +12,4 @@ data:
 			password: {type: string}
 			createdAt: {type: Nette\Utils\DateTime}
 			updatedAt: {type: Nette\Utils\DateTime}
+			roles: {type: array}

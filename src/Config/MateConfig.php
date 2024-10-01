@@ -2,20 +2,16 @@
 
 namespace Contributte\Mate\Config;
 
-use Nette\Schema\Expect;
-use Nette\Schema\Schema;
-
 final class MateConfig
 {
 
-	public static function schema(): Schema
+	/**
+	 * @param array<string> $presets
+	 */
+	public function __construct(
+		public array $presets,
+	)
 	{
-		return Expect::structure([
-			'username' => Expect::string()->required(),
-			'email' => Expect::string()->required(),
-			'password' => Expect::string()->required(),
-		])
-			->castTo(self::class);
 	}
 
 }
