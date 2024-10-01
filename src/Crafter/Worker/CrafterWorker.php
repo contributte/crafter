@@ -80,7 +80,7 @@ final class CrafterWorker
 
 				// Craft (input & output)
 				$intputFile = IO::realpath($crafter->template);
-				$outputFile = IO::realpath($workerContext->mate->process->cwd . '/' . lcfirst($resolvedFilename) . '.php');
+				$outputFile = $workerContext->mate->process->cwd . '/' . lcfirst($resolvedFilename) . '.php';
 
 				$outputContent = $this->templateRenderer->renderFile(
 					file: $intputFile,
