@@ -11,9 +11,9 @@ use Contributte\Mate\Config\ProcessConfig;
 use Contributte\Mate\Config\StructConfig;
 use Contributte\Mate\Config\StructFieldConfig;
 use Contributte\Mate\Config\StructsConfig;
+use Contributte\Mate\Utils\IO;
 use Nette\DI\Helpers as DIHelpers;
 use Nette\Neon\Neon;
-use Nette\Safe;
 use Nette\Schema\Helpers as SchemaHelpers;
 use Nette\Utils\Arrays;
 use Nette\Utils\FileSystem;
@@ -30,7 +30,7 @@ final class ConfigLoader
 		$presets = $config['mate']['presets'] ?? ['default'];
 
 		foreach ($presets as $preset) {
-			$presetDir = Safe::realpath(__DIR__ . '/../../../resources/presets/' . $preset);
+			$presetDir = IO::realpath(__DIR__ . '/../../../resources/presets/' . $preset);
 			$presetFile = $this->loadFile($presetDir . '/config.neon');
 
 			// Expand variables
