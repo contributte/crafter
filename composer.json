@@ -50,8 +50,7 @@
     }
   },
   "bin": [
-    "bin/mate",
-    "bin/mate.php"
+    "bin/mate"
   ],
   "minimum-stability": "dev",
   "prefer-stable": true,
