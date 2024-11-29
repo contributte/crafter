@@ -1,7 +1,6 @@
 dir: app
-presets: [fx]
 
-crafters: [] # TODO
+crafter: []
 
 data:
 	user:
