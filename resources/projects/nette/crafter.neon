@@ -1,0 +1,35 @@
+# Schema version
+version: 1
+
+# List of crafters
+crafters:
+	# Root
+	gitignore: { input: %cwd%/.gitignore.latte, output: 'raw:///.gitignore' }
+	htaccess: { input: %cwd%/.htaccess.latte, output: 'raw:///.htaccess.json' }
+	composer: { input: %cwd%/composer.json.latte, output: 'raw:///composer.json' }
+	readme: { input: %cwd%/readme.md.latte, output: 'raw:///readme.md' }
+	# App
+	app_bootstrap: { input: %cwd%/app/Bootstrap.php.latte, output: 'raw:///app/Bootstrap.php' }
+	app_core_routerfactory: { input: %cwd%/app/Core/RouterFactory.php.latte, output: 'raw:///app/Core/RouterFactory.php' }
+	app_ui_error_4xx_errorpresenter: { input: %cwd%/app/UI/Error/Error4xx/Error4xxPresenter.php.latte, output: 'raw:///app/Error/Error4xx/Error4xxPresenter.php' }
+	app_ui_error_4xx_template_4xx: { input: %cwd%/app/UI/Error/Error4xx/4xx.latte.latte, output: 'raw:///app/UI/Error/Error4xx/4xx.latte' }
+	app_ui_error_4xx_template_403: { input: %cwd%/app/UI/Error/Error4xx/403.latte.latte, output: 'raw:///app/UI/Error/Error4xx/4xx.latte' }
+	app_ui_error_4xx_template_404: { input: %cwd%/app/UI/Error/Error4xx/404.latte.latte, output: 'raw:///app/UI/Error/Error4xx/4xx.latte' }
+	app_ui_error_4xx_template_410: { input: %cwd%/app/UI/Error/Error4xx/410.latte.latte, output: 'raw:///app/UI/Error/Error4xx/4xx.latte' }
+	app_ui_error_5xx_errorpresenter: { input: %cwd%/app/UI/Error/Error5xx/Error5xxPresenter.php.latte, output: 'raw:///app/UI/Error/Error5xx/Error5xxPresenter.php' }
+	app_ui_error_5xx_template_500: { input: %cwd%/app/UI/Error/Error5xx/500.phtml.latte, output: 'raw:///app/UI/Error/Error5xx/500.phtml' }
+	app_ui_error_5xx_template_503: { input: %cwd%/app/UI/Error/Error5xx/503.phtml.latte, output: 'raw:///app/UI/Error/Error5xx/503.phtml' }
+	app_ui_home_homepresenter: { input: %cwd%/app/UI/Home/HomePresenter.php.latte, output: 'raw:///app/UI/Home/HomePresenter.php' }
+	app_ui_home_template_default: { input: %cwd%/app/UI/Home/default.latte.latte, output: 'raw:///app/UI/Home/default.latte' }
+	app_ui_layout: { input: %cwd%/app/UI/@layout.latte.latte, output: 'raw:///app/UI/@layout.latte' }
+	# Config
+	config_services: { input: %cwd%/config/services.neon.latte, output: 'raw:///config/services.neon' }
+	# Log
+	log_gitignore: { input: %cwd%/log/.gitignore.latte, output: 'raw:///log/.gitignore' }
+	# Temp
+	temp_gitignore: { input: %cwd%/temp/.gitignore.latte, output: 'raw:///temp/.gitignore' }
+	# Www
+	www_index: { input: %cwd%/www/index.php.latte, output: 'raw:///www/index.php' }
+	www_htaccess: { input: %cwd%/www/.htaccess.latte, output: 'raw:///www/.htaccess.php' }
+	www_robots: { input: %cwd%/www/robots.txt.latte, output: 'raw:///robots.txt' }
+	www_favicon: { input: %cwd%/www/favicon.ico.latte, output: 'raw:///www/favicon.ico' }

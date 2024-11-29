@@ -1,0 +1,32 @@
+parameters:
+
+application:
+	errorPresenter:
+		4xx: Error:Error4xx
+		5xx: Error:Error5xx
+	mapping: App\UI\*\**Presenter
+
+database:
+	dsn: 'sqlite::memory:'
+	user:
+	password:
+
+latte:
+	strictTypes: yes
+	strictParsing: yes
+	extensions:
+		# - App\UI\Accessory\LatteExtension
+
+di:
+	export:
+		parameters: no
+		tags: no
+
+search:
+	-	in: %appDir%
+		classes:
+			- *Factory
+			- *Facade
+
+services:
+	- App\Core\RouterFactory::createRouter
