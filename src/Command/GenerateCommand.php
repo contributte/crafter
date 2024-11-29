@@ -51,8 +51,10 @@ final class GenerateCommand extends BaseCommand
 				label: 'What output directory you want to use?',
 				options: [
 					'nella' => 'Nella project',
-					'nette' => 'Nette project',
-					'doctrine' => 'Doctrine project (coming soon)',
+					'nella-mini' => 'Nella (mini) project',
+					'nette' => 'Nette ',
+					'doctrine' => 'Nette + Doctrine (coming soon)',
+					'messenger' => 'Symfony Messenger (coming soon)',
 				],
 				required: true
 			))->prompt();
