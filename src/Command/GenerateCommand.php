@@ -3,12 +3,12 @@
 namespace Contributte\Crafter\Command;
 
 use Contributte\Crafter\Config\Loader\ConfigLoader;
+use Contributte\Crafter\Utils\Validators;
 use Contributte\Crafter\Worker\Generator\GeneratorContext;
 use Contributte\Crafter\Worker\Generator\GeneratorWorker;
+use Laravel\Prompts\SelectPrompt;
+use Laravel\Prompts\TextPrompt;
 use Nette\Safe;
-use Nette\Schema\Expect;
-use Nette\Schema\Processor;
-use Nette\Schema\ValidationException;
 use Nette\Utils\Arrays;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -41,25 +41,34 @@ final class GenerateCommand extends BaseCommand
 	{
 		$ui = (new SymfonyStyle($input, $output))->getErrorStyle();
 
-		try {
-			/** @var object{ template: string, directory: string } $options */
-			$options = (new Processor())->process(
-				Expect::structure([
-					'template' => Expect::mixed()->assert(fn ($v) => $v !== null && $v !== '', 'Option --template|-t must be filled'),
-					'directory' => Expect::mixed()->default('.')->assert(fn ($v) => $v !== null && $v !== '', 'Option --directory|-d must be filled'),
-				])->otherItems(),
-				$input->getOptions()
-			);
-		} catch (ValidationException $e) {
-			foreach ($e->getMessageObjects() as $message) {
-				$ui->error($message->variables['assertion']);
-			}
+		// Input
+		/** @var string $inputTemplate */
+		$inputTemplate = $input->getOption('template');
 
-			return Command::FAILURE;
+		if (Validators::empty($inputTemplate)) {
+			/** @var string $inputTemplate */
+			$inputTemplate = (new SelectPrompt(
+				label: 'What output directory you want to use?',
+				options: [
+					'nella' => 'Nella project',
+					'nette' => 'Nette project',
+					'doctrine' => 'Doctrine project (coming soon)',
+				],
+				required: true
+			))->prompt();
 		}
 
-		// Input
-		$template = $options->template;
+		/** @var string $inputDirectory */
+		$inputDirectory = $input->getOption('directory');
+
+		if (Validators::empty($inputDirectory)) {
+			/** @var string $inputDirectory */
+			$inputDirectory = (new TextPrompt(label: 'Where to create project (folder)?', default: 'demo', required: true))->prompt();
+		}
+
+		// Vars
+		$template = $inputTemplate;
+		$directory = $inputDirectory;
 		$cwd = Safe::getcwd();
 
 		// Config
@@ -78,7 +87,7 @@ final class GenerateCommand extends BaseCommand
 		]);
 
 		// Context
-		$generatorContext = GeneratorContext::from($config, dir: $options->directory);
+		$generatorContext = GeneratorContext::from($config, dir: $directory);
 
 		// Worker
 		$result = $this->generatorWorker->execute($generatorContext, $this->createLogger($output));

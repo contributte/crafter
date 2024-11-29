@@ -3,12 +3,11 @@
 namespace Contributte\Crafter\Command;
 
 use Contributte\Crafter\Config\Loader\ConfigLoader;
+use Contributte\Crafter\Utils\Validators;
 use Contributte\Crafter\Worker\Crafter\CrafterContext;
 use Contributte\Crafter\Worker\Crafter\CrafterWorker;
+use Laravel\Prompts\TextPrompt;
 use Nette\Safe;
-use Nette\Schema\Expect;
-use Nette\Schema\Processor;
-use Nette\Schema\ValidationException;
 use Nette\Utils\Arrays;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -34,39 +33,30 @@ final class CraftCommand extends BaseCommand
 	protected function configure(): void
 	{
 		$this->addOption('data', 'k', InputOption::VALUE_REQUIRED, 'Data key definition');
-		$this->addOption('scope', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Scope definition');
+		$this->addOption('scope', 's', InputOption::VALUE_REQUIRED, 'Scope definition');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
-		$ui = (new SymfonyStyle($input, $output))->getErrorStyle();
-
-		try {
-			/** @var object{ data: string, scope: string[] } $options */
-			$options = (new Processor())->process(
-				Expect::structure([
-					'data' => Expect::mixed()->assert(fn ($v) => $v !== null && $v !== '', 'Option --data|-k must be filled'),
-					'scope' => Expect::arrayOf('string'),
-				])->otherItems()
-					->before(function (array $v) {
-						$v['scope'] = $v['scope'] === [] ? ['default'] : $v['scope'];
-
-						return $v;
-					}),
-				$input->getOptions()
-			);
-		} catch (ValidationException $e) {
-			foreach ($e->getMessageObjects() as $message) {
-				$ui->error($message->variables['assertion']);
-			}
-
-			return Command::FAILURE;
-		}
+		$style = (new SymfonyStyle($input, $output));
+		$ui = $style->getErrorStyle();
 
 		// Input
-		$key = $options->data;
+		/** @var string $inputKey */
+		$inputKey = $input->getOption('data');
+
+		if (Validators::empty($inputKey)) {
+			/** @var string $inputKey */
+			$inputKey = (new TextPrompt(label: 'What data structure you want to craft?', required: true))->prompt();
+		}
+
+		/** @var string $inputScope */
+		$inputScope = $input->getOption('scope');
+
+		// Vars
+		$key = $inputKey;
 		$cwd = Safe::getcwd();
-		$scopes = $options->scope ?? ['default'];
+		$scopes = Validators::empty($inputScope) ? ['default'] : [$inputScope];
 		$configFile = $cwd . '/crafter.neon';
 
 		// Config
