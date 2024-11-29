@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Contributte\Mate\Template;
+namespace Contributte\Crafter\Template;
 
 use Latte\ContentType;
 use Latte\Engine;
@@ -32,9 +32,17 @@ final class TemplateRenderer
 	/**
 	 * @param array<mixed> $params
 	 */
-	public function renderFile(string $file, array $params = []): string
+	public function renderPhp(string $file, array $params = []): string
 	{
 		return $this->render(FileSystem::read($file), $params);
+	}
+
+	/**
+	 * @param array<mixed> $params
+	 */
+	public function renderLatte(string $file, array $params = []): string
+	{
+		return $this->render('{syntax double}' . FileSystem::read($file), $params);
 	}
 
 }

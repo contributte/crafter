@@ -1,0 +1,8 @@
+dir: src
+namespace: MyApp
+
+data:
+	user:
+		fields:
+			username: {type: string}
+			email: {type: string}

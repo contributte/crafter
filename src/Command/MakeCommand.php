@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Contributte\Mate\Command;
+namespace Contributte\Crafter\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

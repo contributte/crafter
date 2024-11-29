@@ -1,5 +1,0 @@
-app:
-	namespace: App
-	appDir: app
-
-	crafters: []

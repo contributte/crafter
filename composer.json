@@ -1,8 +1,8 @@
 {
-  "name": "contributte/mate",
+  "name": "contributte/crafter",
   "description": "Yummy opinionated PHP generator for web masters.",
   "keywords": [
-    "mate",
+    "crafter",
     "generator",
     "project",
     "assistant",
@@ -10,7 +10,7 @@
   ],
   "type": "library",
   "license": "MIT",
-  "homepage": "https://github.com/contributte/mate",
+  "homepage": "https://github.com/contributte/crafter",
   "authors": [
     {
       "name": "Milan Felix Šulc",
@@ -27,21 +27,19 @@
     "latte/latte": "^3.0.18",
     "symfony/console": "^7.1.5",
     "nette/safe": "^1.0.0",
-    "psr/log": "^3.0.2"
+    "psr/log": "^3.0.2",
+    "nyholm/dsn": "^2.0.1"
   },
   "require-dev": {
     "contributte/qa": "^0.4.0",
-    "contributte/tester": "^0.1.0",
+    "contributte/tester": "^0.4.0",
     "mockery/mockery": "^1.5.0",
-    "phpstan/phpstan": "^1.2.0",
-    "phpstan/phpstan-deprecation-rules": "^1.0.0",
-    "phpstan/phpstan-nette": "^1.0.0",
-    "phpstan/phpstan-strict-rules": "^1.1.0",
+    "contributte/phpstan": "^0.3.0",
     "humbug/box": "^4.6.2"
   },
   "autoload": {
     "psr-4": {
-      "Contributte\\Mate\\": "src"
+      "Contributte\\Crafter\\": "src"
     }
   },
   "autoload-dev": {
@@ -50,7 +48,7 @@
     }
   },
   "bin": [
-    "bin/mate"
+    "bin/crafter"
   ],
   "minimum-stability": "dev",
   "prefer-stable": true,

@@ -1,0 +1,14 @@
+# Schema version
+version: 1
+
+# List of crafters
+crafters:
+	# Full
+	file:
+		input: %cwd%/templates/database/entity.latte
+		output: 'App\Domain\{$name|firstUpper}\Database\{$name|firstUpper}'
+		vars:
+			some: variable
+
+	# Compact
+	www_index: { input: %cwd%/www/index.php.latte, output: 'raw://www/index.php' }

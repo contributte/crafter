@@ -23,27 +23,26 @@ parameters:
 	typeAliases:
 		ConfigShape: """
 			array{
-				app: array{
-					appDir: string,
-					namespace: string,
-					scopes: array<string>|null,
-					crafters: array<array{
-						crafter: string,
-						template: string,
-						class: string,
-						mode: string|null,
-						scopes: array<string>|null,
-						baseClass: string|null
-					}>|null
-				},
-				mate: array{
-					presets: array<string>|null
-				},
-				structs: array<string, array{
+				version: string,
+				dir: string,
+				namespace: string,
+				vars: array<string, scalar>|null,
+				preset: string|null,
+				template: string|null,
+				crafters: CraftersShape,
+				data: array<string, array{
 					fields: array<string, array{
 						type: string,
-						nullable: bool|null
-					}>|null
-				}>|null
+						nullable: bool|null,
+					}>,
+					vars: array<string, scalar>|null,
+				}>
 			}
+		"""
+		CraftersShape: """
+			array<string, array{
+				input: string,
+				output: string,
+				vars: array<string>|null,
+			}>
 		"""

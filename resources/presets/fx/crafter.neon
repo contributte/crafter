@@ -1,0 +1,220 @@
+# Schema version
+version: 1
+
+# List of crafters
+crafters:
+	# Database ================================
+	database_entity:
+		name: entity
+		scopes: [database]
+		crafter:
+			type: latte # explicit
+			template: %cwd%/templates/database/entity.latte
+			class: 'App\Domain\{$name|firstUpper}\Database\{$name|firstUpper}'
+
+	database_repository:
+		name: repository
+		scopes: [database]
+		crafter:
+			# type: latte # autodetect by extension
+			template: %cwd%/templates/database/repository.latte
+			class: 'App\Domain\{$name|firstUpper}\Database\{$name|firstUpper}Repository'
+
+	# Bus ====================================
+	# Bus (create)
+	bus_command_create:
+		name: command@create
+		scopes: [bus]
+		crafter:
+			template: %cwd%/templates/bus/command_create.latte
+			class: 'App\Domain\{$name|firstUpper}\Create{$name|firstUpper}Command'
+	bus_handler_create:
+		name: handler@create
+		scopes: [bus]
+		crafter:
+			template: %cwd%/templates/bus/handler_create.latte
+			class: 'App\Domain\{$name|firstUpper}\Create{$name|firstUpper}Handler'
+	# Bus (update)
+	bus_command_update:
+		name: command@update
+		scopes: [bus]
+		crafter:
+			template: %cwd%/templates/bus/command_update.latte
+			class: 'App\Domain\{$name|firstUpper}\Update{$name|firstUpper}Command'
+	bus_handler_update:
+		name: handler@update
+		scopes: [bus]
+		crafter:
+			template: %cwd%/templates/bus/handler_update.latte
+			class: 'App\Domain\{$name|firstUpper}\Update{$name|firstUpper}Handler'
+	# Bus (get)
+	bus_command_get:
+		name: command@get
+		scopes: [bus]
+		crafter:
+			template: %cwd%/templates/bus/command_get.latte
+			class: 'App\Domain\{$name|firstUpper}\Get{$name|firstUpper}Command'
+	bus_handler_get:
+		name: handler@get
+		scopes: [bus]
+		crafter:
+			template: %cwd%/templates/bus/handler_get.latte
+			class: 'App\Domain\{$name|firstUpper}\Get{$name|firstUpper}Handler'
+	# Bus (list)
+	bus_command_list:
+		name: command@update
+		scopes: [bus]
+		crafter:
+			template: %cwd%/templates/bus/command_list.latte
+			class: 'App\Domain\{$name|firstUpper}\List{$name|firstUpper}Command'
+	bus_handler_list:
+		name: handler@create
+		scopes: [bus]
+		crafter:
+			template: %cwd%/templates/bus/handler_list.latte
+			class: 'App\Domain\{$name|firstUpper}\List{$name|firstUpper}Handler'
+	# Bus (delete)
+	bus_command_delete:
+		name: command@delete
+		scopes: [bus]
+		crafter:
+			template: %cwd%/templates/bus/command_delete.latte
+			class: 'App\Domain\{$name|firstUpper}\Delete{$name|firstUpper}Command'
+	bus_handler_delete:
+		name: handler@delete
+		scopes: [bus]
+		crafter:
+			template: %cwd%/templates/bus/handler_delete.latte
+			class: 'App\Domain\{$name|firstUpper}\Delete{$name|firstUpper}Handler'
+
+	# API ====================================
+	# API (create)
+	api_controller_create:
+		name: controller@create
+		scopes: [api]
+		crafter:
+			template: %cwd%/templates/api/controller_create.latte
+			class: 'App\Api\{$name|firstUpper}\Create\Create{$name|firstUpper}Controller'
+
+	api_request_create:
+		name: request@create
+		scopes: [api]
+		crafter:
+			template: %cwd%/templates/api/request_create.latte
+			class: 'App\Api\{$name|firstUpper}\Create\Create{$name|firstUpper}Request'
+
+	api_request_body_create:
+		name: request_body@create
+		scopes: [api]
+		crafter:
+			template: %cwd%/templates/api/request_body_create.latte
+			class: 'App\Api\{$name|firstUpper}\Create\Create{$name|firstUpper}RequestBody'
+
+	api_response_create:
+		name: response@create
+		scopes: [api]
+		crafter:
+			template: %cwd%/templates/api/response_create.latte
+			class: 'App\Api\{$name|firstUpper}\Create\Create{$name|firstUpper}Response'
+
+	# API (update)
+	api_controller_update:
+		name: controller@update
+		scopes: [api]
+		crafter:
+			template: %cwd%/templates/api/controller_update.latte
+			class: 'App\Api\{$name|firstUpper}\Update\Update{$name|firstUpper}Controller'
+
+	api_request_update:
+		name: request@update
+		scopes: [api]
+		crafter:
+			template: %cwd%/templates/api/request_update.latte
+			class: 'App\Api\{$name|firstUpper}\Update\Update{$name|firstUpper}Request'
+
+	api_request_body_update:
+		name: request_body@update
+		scopes: [api]
+		crafter:
+			template: %cwd%/templates/api/request_body_update.latte
+			class: 'App\Api\{$name|firstUpper}\Update\Update{$name|firstUpper}RequestBody'
+
+	api_response_update:
+		name: response@update
+		scopes: [api]
+		crafter:
+			template: %cwd%/templates/api/response_update.latte
+			class: 'App\Api\{$name|firstUpper}\Update\Update{$name|firstUpper}Response'
+
+	# API (get)
+	api_controller_get:
+		name: controller@get
+		scopes: [api]
+		crafter:
+			template: %cwd%/templates/api/controller_get.latte
+			class: 'App\Api\{$name|firstUpper}\Get\Get{$name|firstUpper}Controller'
+
+	api_request_get:
+		name: request@get
+		scopes: [api]
+		crafter:
+			template: %cwd%/templates/api/request_get.latte
+			class: 'App\Api\{$name|firstUpper}\Get\Get{$name|firstUpper}Request'
+
+	api_response_get:
+		name: response@get
+		scopes: [api]
+		crafter:
+			template: %cwd%/templates/api/response_get.latte
+			class: 'App\Api\{$name|firstUpper}\Get\Get{$name|firstUpper}Response'
+
+	# API (list)
+	api_controller_list:
+		name: controller@list
+		scopes: [api]
+		crafter:
+			template: %cwd%/templates/api/controller_list.latte
+			class: 'App\Api\{$name|firstUpper}\List\List{$name|firstUpper}Controller'
+
+	api_request_list:
+		name: request@list
+		scopes: [api]
+		crafter:
+			template: %cwd%/templates/api/request_list.latte
+			class: 'App\Api\{$name|firstUpper}\List\List{$name|firstUpper}Request'
+
+	api_request_filter_list:
+		name: request_filter@list
+		scopes: [api]
+		crafter:
+			template: %cwd%/templates/api/request_filter_list.latte
+			class: 'App\Api\{$name|firstUpper}\List\List{$name|firstUpper}RequestFilter'
+
+	api_response_list:
+		name: response@list
+		scopes: [api]
+		crafter:
+			template: %cwd%/templates/api/response_list.latte
+			class: 'App\Api\{$name|firstUpper}\List\List{$name|firstUpper}Response'
+
+	# API (delete)
+	api_controller_delete:
+		name: controller@delete
+		scopes: [api]
+		crafter:
+			template: %cwd%/templates/api/controller_delete.latte
+			class: 'App\Api\{$name|firstUpper}\Delete\Delete{$name|firstUpper}Controller'
+
+	api_request_delete:
+		name: request@delete
+		scopes: [api]
+		crafter:
+			template: %cwd%/templates/api/request_delete.latte
+			class: 'App\Api\{$name|firstUpper}\Delete\Delete{$name|firstUpper}Response'
+
+	api_response_delete:
+		name: response@delete
+		scopes: [api]
+		crafter:
+			template: %cwd%/templates/api/response_delete.latte
+			class: 'App\Api\{$name|firstUpper}\Delete\Delete{$name|firstUpper}Response'

@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Contributte\Mate\Utils;
+namespace Contributte\Crafter\Utils;
 
 final class Classes
 {
@@ -18,6 +18,13 @@ final class Classes
 		array_pop($parts);
 
 		return implode('\\', $parts);
+	}
+
+	public static function getRootNamespace(string $fqn): string
+	{
+		$parts = explode('\\', $fqn);
+
+		return array_shift($parts);
 	}
 
 }

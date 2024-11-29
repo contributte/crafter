@@ -1,0 +1,69 @@
+input:
+	dir: src
+	namespace: MyApp
+	preset: nette
+
+	data:
+		user:
+			fields:
+				username: {type: string}
+				email: {type: string}
+
+output:
+	process:
+		cwd: %a%/tests/Cases/Config/Loader
+	app:
+		version: "1"
+		dir: src
+		namespace: MyApp
+		vars: []
+		preset: nette
+		template: null
+		crafters:
+			presenter:
+				id: presenter
+				name: presenter
+				mode: null
+				scopes: [
+					default
+				]
+				input:
+					resolver: latte
+					path: "%a%/resources/presets/nette/templates/presenter/presenter.latte"
+					vars: []
+				output:
+					resolver: php
+					path: "/{$namespace}\\UI\\{$name|firstUpper}\\{$name|firstUpper}Presenter.php"
+					vars: []
+				vars: []
+			presenter_template:
+				id: presenter_template
+				name: presenter_template
+				mode: null
+				scopes: [
+					default
+				]
+				input:
+					resolver: latte
+					path: "%a%/resources/presets/nette/templates/presenter/template.latte"
+					vars: []
+				output:
+					resolver: latte
+					path: "/UI/{$name|firstUpper}/Templates/default.latte"
+					vars: []
+				vars: []
+		scopes: []
+	data:
+		items:
+			user:
+				name: user
+				fields:
+					username:
+						name: username
+						type: string
+						nullable: false
+					email:
+						name: email
+						type: string
+						nullable: false
+				vars: []

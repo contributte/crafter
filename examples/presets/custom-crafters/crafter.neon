@@ -1,0 +1,14 @@
+dir: app
+presets: [fx]
+
+crafters: [] # TODO
+
+data:
+	user:
+		fields:
+			username: {type: string}
+			email: {type: string}
+			password: {type: string}
+			createdAt: {type: Nette\Utils\DateTime}
+			updatedAt: {type: Nette\Utils\DateTime}
+			roles: {type: array}

@@ -1,14 +1,14 @@
-![](https://heatbadger.now.sh/github/readme/contributte/mate/)
+![](https://heatbadger.now.sh/github/readme/contributte/crafter/)
 
 <p align=center>
-  <a href="https://github.com/contributte/mate/actions"><img src="https://badgen.net/github/checks/contributte/mate/master?cache=300"></a>
-  <a href="https://coveralls.io/r/contributte/mate"> <img src="https://badgen.net/coveralls/c/github/contributte/mate?cache=300"> </a>
-  <a href="https://packagist.org/packages/contributte/mate"> <img src="https://badgen.net/packagist/dm/contributte/mate"> </a>
-  <a href="https://packagist.org/packages/contributte/mate"> <img src="https://badgen.net/packagist/v/contributte/mate"> </a>
+  <a href="https://github.com/contributte/crafter/actions"><img src="https://badgen.net/github/checks/contributte/crafter/master?cache=300"></a>
+  <a href="https://coveralls.io/r/contributte/crafter"> <img src="https://badgen.net/coveralls/c/github/contributte/crafter?cache=300"> </a>
+  <a href="https://packagist.org/packages/contributte/crafter"> <img src="https://badgen.net/packagist/dm/contributte/crafter"> </a>
+  <a href="https://packagist.org/packages/contributte/crafter"> <img src="https://badgen.net/packagist/v/contributte/crafter"> </a>
 </p>
 <p align=center>
-  <a href="https://packagist.org/packages/contributte/mate"><img src="https://badgen.net/packagist/php/contributte/mate"></a>
-  <a href="https://github.com/contributte/mate"><img src="https://badgen.net/github/license/contributte/mate"></a>
+  <a href="https://packagist.org/packages/contributte/crafter"><img src="https://badgen.net/packagist/php/contributte/crafter"></a>
+  <a href="https://github.com/contributte/crafter"><img src="https://badgen.net/github/license/contributte/crafter"></a>
   <a href="https://bit.ly/ctteg"><img src="https://badgen.net/badge/support/gitter/cyan"></a>
   <a href="https://bit.ly/cttfo"><img src="https://badgen.net/badge/support/forum/yellow"></a>
   <a href="https://contributte.org/partners.html"><img src="https://badgen.net/badge/become/a%20patron/F96854"></a>
@@ -20,10 +20,10 @@ Website ðŸš€ <a href="https://contributte.org">contributte.org</a> | Contact ðŸ‘
 
 ## Usage
 
-To install the latest version of `contributte/mate` use [Composer](https://getcomposer.org).
+To install the latest version of `contributte/crafter` use [Composer](https://getcomposer.org).
 
 ```
-composer require contributte/mate
+composer require contributte/crafter
 ```
 
 ## Documentation

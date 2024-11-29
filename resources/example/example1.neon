@@ -1,0 +1,28 @@
+# Schema version
+version: 1
+
+# Type of crafter
+type: preset
+
+# Application directory
+dir: src
+
+# Application namespace
+namespace: MyApp
+
+# Global variables
+vars: []
+
+# List of crafters
+crafters: []
+
+# Data structures
+data:
+	user:
+		fields:
+			username: {type: string}
+			email: {type: string}
+			password: {type: string}
+			createdAt: {type: Nette\Utils\DateTime}
+			updatedAt: {type: Nette\Utils\DateTime}
+			roles: {type: array}

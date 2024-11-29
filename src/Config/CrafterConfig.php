@@ -1,20 +1,22 @@
 <?php declare(strict_types = 1);
 
-namespace Contributte\Mate\Config;
+namespace Contributte\Crafter\Config;
 
 final class CrafterConfig
 {
 
 	/**
 	 * @param array<string> $scopes
+	 * @param array<string> $vars
 	 */
 	public function __construct(
-		public string $crafter,
-		public string $template,
-		public string $class,
-		public string|null $mode = null,
-		public array $scopes = [],
-		public string|null $baseClass = null,
+		public string $id,
+		public string $name,
+		public string|null $mode,
+		public array $scopes,
+		public CrafterFileConfig $input,
+		public CrafterFileConfig $output,
+		public array $vars,
 	)
 	{
 	}

@@ -1,12 +1,16 @@
 <?php declare(strict_types = 1);
 
-namespace Contributte\Mate;
+namespace Contributte\Crafter;
 
-use Contributte\Mate\Command\CraftCommand;
-use Contributte\Mate\Config\Loader\ConfigLoader;
-use Contributte\Mate\Crafter\Worker\CrafterWorker;
-use Contributte\Mate\DI\BetterContainer;
-use Contributte\Mate\Template\TemplateRenderer;
+use Contributte\Crafter\Command\CraftCommand;
+use Contributte\Crafter\Command\GenerateCommand;
+use Contributte\Crafter\DI\BetterContainer;
+use Contributte\Crafter\Template\TemplateRenderer;
+use Contributte\Crafter\Worker\Crafter\CrafterWorker;
+use Contributte\Crafter\Worker\Crafter\Resolver\Latte\LatteResolver;
+use Contributte\Crafter\Worker\Crafter\Resolver\Php\PhpResolver;
+use Contributte\Crafter\Worker\Generator\GeneratorWorker;
+use Contributte\Crafter\Worker\Generator\Resolver\Raw\RawResolver;
 use Symfony\Component\Console\Application;
 
 final class Bootstrap
@@ -15,12 +19,23 @@ final class Bootstrap
 	public static function boot(): Application
 	{
 		$container = new BetterContainer();
-		$container->service(ConfigLoader::class, fn (): ConfigLoader => new ConfigLoader());
-		$container->service(TemplateRenderer::class, fn (): TemplateRenderer => new TemplateRenderer());
-		$container->service(CrafterWorker::class, fn (TemplateRenderer $templateRenderer): CrafterWorker => new CrafterWorker($templateRenderer));
 
-		$application = new Application('Mate', '0.1.0');
+		// Template
+		$container->service(TemplateRenderer::class, fn (): TemplateRenderer => new TemplateRenderer());
+
+		// Generator worker
+		$container->service(GeneratorWorker::class, fn (RawResolver $rawResolver): GeneratorWorker => new GeneratorWorker($rawResolver));
+		$container->service(RawResolver::class, fn (TemplateRenderer $templateRenderer): RawResolver => new RawResolver($templateRenderer));
+
+		// Crafter worker
+		$container->service(CrafterWorker::class, fn (PhpResolver $phpResolver, LatteResolver $latteResolver): CrafterWorker => new CrafterWorker($phpResolver, $latteResolver));
+		$container->service(PhpResolver::class, fn (TemplateRenderer $templateRenderer): PhpResolver => new PhpResolver($templateRenderer));
+		$container->service(LatteResolver::class, fn (TemplateRenderer $templateRenderer): LatteResolver => new LatteResolver($templateRenderer));
+
+		// Symfony Console
+		$application = new Application('Crafter', 'magic');
 		$application->add($container->createInstance(CraftCommand::class));
+		$application->add($container->createInstance(GenerateCommand::class));
 
 		return $application;
 	}

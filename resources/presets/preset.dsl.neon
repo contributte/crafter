@@ -1,0 +1,21 @@
+# Schema version
+version: 1
+
+# List of crafters
+crafters:
+	# Full syntax
+	acme:
+		id: acme@acme
+		crafter:
+			type: latte
+			template: %cwd%/templates/acme.latte
+			file: "{$namespace}\Acme\{$name|firstUpper}\Foo\{$name|firstUpper}.php"
+		vars:
+			some: variable
+
+	# Compact syntax
+	acme2:
+		id: acme2@acme
+		crafter:
+			template: %cwd%/templates/acme.latte
+			file: "App\Acme\{$name|firstUpper}\Foo\{$name|firstUpper}.php"

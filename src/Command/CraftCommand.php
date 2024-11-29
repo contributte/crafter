@@ -1,10 +1,10 @@
 <?php declare(strict_types = 1);
 
-namespace Contributte\Mate\Command;
+namespace Contributte\Crafter\Command;
 
-use Contributte\Mate\Config\Loader\ConfigLoader;
-use Contributte\Mate\Crafter\Worker\CrafterWorker;
-use Contributte\Mate\Crafter\Worker\WorkerContextFactory;
+use Contributte\Crafter\Config\Loader\ConfigLoader;
+use Contributte\Crafter\Worker\Crafter\CrafterContext;
+use Contributte\Crafter\Worker\Crafter\CrafterWorker;
 use Nette\Safe;
 use Nette\Schema\Expect;
 use Nette\Schema\Processor;
@@ -25,7 +25,6 @@ final class CraftCommand extends BaseCommand
 {
 
 	public function __construct(
-		private ConfigLoader $configLoader,
 		private CrafterWorker $crafterWorker,
 	)
 	{
@@ -34,7 +33,7 @@ final class CraftCommand extends BaseCommand
 
 	protected function configure(): void
 	{
-		$this->addOption('struct', 's', InputOption::VALUE_REQUIRED, 'Structure definition');
+		$this->addOption('data', 'k', InputOption::VALUE_REQUIRED, 'Data key definition');
 		$this->addOption('scope', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Scope definition');
 	}
 
@@ -43,11 +42,19 @@ final class CraftCommand extends BaseCommand
 		$ui = (new SymfonyStyle($input, $output))->getErrorStyle();
 
 		try {
-			/** @var object{ struct: string, scope: string[] } $options */
-			$options = (new Processor())->process(Expect::structure([
-				'struct' => Expect::mixed()->assert(fn ($v) => $v !== null && $v !== '', 'Option --struct|-s must be filled'),
-				'scope' => Expect::arrayOf('string')->default([]),
-			])->otherItems(), $input->getOptions());
+			/** @var object{ data: string, scope: string[] } $options */
+			$options = (new Processor())->process(
+				Expect::structure([
+					'data' => Expect::mixed()->assert(fn ($v) => $v !== null && $v !== '', 'Option --data|-k must be filled'),
+					'scope' => Expect::arrayOf('string'),
+				])->otherItems()
+					->before(function (array $v) {
+						$v['scope'] = $v['scope'] === [] ? ['default'] : $v['scope'];
+
+						return $v;
+					}),
+				$input->getOptions()
+			);
 		} catch (ValidationException $e) {
 			foreach ($e->getMessageObjects() as $message) {
 				$ui->error($message->variables['assertion']);
@@ -57,31 +64,33 @@ final class CraftCommand extends BaseCommand
 		}
 
 		// Input
-		$struct = $options->struct;
+		$key = $options->data;
 		$cwd = Safe::getcwd();
-		$configFile = $cwd . '/.mate.neon';
+		$scopes = $options->scope ?? ['default'];
+		$configFile = $cwd . '/crafter.neon';
 
 		// Config
-		$config = $this->configLoader->load($cwd, $cwd . '/.mate.neon');
+		$config = (new ConfigLoader())
+			->withCwd($cwd)
+			->withFile($configFile)
+			->load();
 
 		// HUD
 		$ui->title('Input');
 		$ui->table([], [
 			['CWD', $cwd],
 			['Config', $configFile],
-			['Struct', $struct],
-			['Presets', implode(',', $config->mate->presets)],
-			['Scopes', implode(',', $options->scope)],
+			['Structure', $key],
+			['Presets', $config->app->preset],
+			['Scopes', implode(',', $scopes)],
 		]);
 
 		// Context
-		$workerContextFactory = new WorkerContextFactory();
-		$workerContextFactory->withScopes($options->scope);
-		$workerContext = $workerContextFactory->from($config);
+		$workerContext = CrafterContext::from($config, $scopes);
 
 		// Worker validation
-		if (!$config->structs->has($struct)) {
-			$ui->error(sprintf('Unknown struct reference "%s" in .mate.neon', $struct));
+		if (!$config->data->has($key)) {
+			$ui->error(sprintf('Unknown data reference "%s" in crafter.neon', $key));
 
 			return Command::FAILURE;
 		}

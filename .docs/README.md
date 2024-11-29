@@ -5,14 +5,14 @@
 ## Installation
 
 ```bash
-composer require contributte/mate --dev
+composer require contributte/crafter --dev
 ```
 
 ## Quickstart
 
-1. Create `.mate.neon` in your project root.
+1. Create `crafter.neon` in your project root.
 
-You can initialize it by running `vendor/bin/mate init`. Or you can create it manually.
+You can initialize it by running `vendor/bin/crafter init`. Or you can create it manually.
 
 ```neon
 data:
@@ -21,14 +21,14 @@ data:
 			username: {type: string}
 			email: {type: string}
 			password: {type: string}
-			createdAt: {type: Nette\Utils\DateTime}
-			updatedAt: {type: Nette\Utils\DateTime}
+			createdAt: {type: datetime}
+			updatedAt: {type: datetime}
 ```
 
-2. Run `vendor/bin/mate` or `php mate.phar` in your project root.
+2. Run `vendor/bin/crafter` or `php crafter.phar` in your project root.
 
 ```
-vendor/bin/mate craft
+vendor/bin/crafter craft
 ```
 
 ## Configuration
@@ -37,39 +37,33 @@ Under construction.
 
 ## Usage
 
-### `mate init`
+### `crafter init`
 
-Create `.mate.neon` in your project.
+Create `crafter.neon` in your project.
 
-### `mate craft`
+### `crafter craft`
 
-Generate files based on `.mate.neon`.
+Generate files based on `crafter.neon`.
+
+You can define:
+
+- `--data|-k` - data structure key
+- `--scope|-s` - scope of generation
 
 ```bash
-vendor/bin/mate craft --struct user
+vendor/bin/crafter craft -k user
+vendor/bin/crafter craft -k user -s database
 ```
 
-```bash
-vendor/bin/mate craft --struct user --crafter=entity
-vendor/bin/mate craft --struct user --crafter=repository
+### `crafter generate`
 
-vendor/bin/mate craft --struct user --crafter=bus --mode=create
-vendor/bin/mate craft --struct user --crafter=bus --mode=update
-vendor/bin/mate craft --struct user --crafter=bus --mode=delete
-vendor/bin/mate craft --struct user --crafter=bus --mode=list
-vendor/bin/mate craft --struct user --crafter=bus --mode=get
+Generate whole project based on template.
 
-vendor/bin/mate craft --struct user --crafter=api --mode=create
-vendor/bin/mate craft --struct user --crafter=api --mode=update
-vendor/bin/mate craft --struct user --crafter=api --mode=delete
-vendor/bin/mate craft --struct user --crafter=api --mode=list
-vendor/bin/mate craft --struct user --crafter=api --mode=get
-```
+You can define:
 
-### `mate generate`
-
-Generate whole project based on `.mate.neon`.
+- `--template|-t` - project template
+- `--directory|-d` - output folder
 
 ```bash
-vendor/bin/mate generate --template api
+vendor/bin/crafter generate -t nella -d demo
 ```

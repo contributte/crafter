@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Tests\Cases\Override;
+namespace Tests\Cases;
 
 use Contributte\Tester\Toolkit;
 use Tester\Assert;

@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Contributte\Mate\DI;
+namespace Contributte\Crafter\DI;
 
 use Closure;
 use Nette\DI\Container;

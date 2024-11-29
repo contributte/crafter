@@ -1,7 +1,7 @@
 {
-	"main": "bin/mate.php",
+	"main": "bin/crafter.php",
 	"chmod": "0775",
-	"output": "dist/mate.phar",
+	"output": "dist/crafter.phar",
 	"force-autodiscovery": true,
 	"directories": [
 		"resources"
