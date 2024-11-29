@@ -1,0 +1,20 @@
+# Schema version
+version: 1
+
+# List of crafters
+crafters:
+	# Root
+	gitignore: { input: %cwd%/.gitignore.latte, output: 'raw:///.gitignore' }
+	composer: { input: %cwd%/composer.json.latte, output: 'raw:///composer.json' }
+	# App
+	app_bootstrap: { input: %cwd%/app/Bootstrap.php.latte, output: 'raw:///app/Bootstrap.php' }
+	app_ui_home_homepresenter: { input: %cwd%/app/UI/Home/HomePresenter.php.latte, output: 'raw:///app/UI/Home/HomePresenter.php' }
+	app_ui_home_template_default: { input: %cwd%/app/UI/Home/Templates/default.latte.latte, output: 'raw:///app/UI/Home/Templates/default.latte' }
+	app_ui_layout: { input: %cwd%/app/UI/@Templates/@layout.latte.latte, output: 'raw:///app/UI/@Templates/@layout.latte' }
+	# Config
+	config_config: { input: %cwd%/config/config.neon.latte, output: 'raw:///config/config.neon' }
+	# Var
+	var_log_gitignore: { input: %cwd%/var/log/.gitignore.latte, output: 'raw:///var/log/.gitignore' }
+	var_tmp_gitignore: { input: %cwd%/var/tmp/.gitignore.latte, output: 'raw:///var/tmp/.gitignore' }
+	# Www
+	www_index: { input: %cwd%/www/index.php.latte, output: 'raw:///www/index.php' }
