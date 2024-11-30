@@ -5,7 +5,7 @@ version: 1
 crafters:
 	presenter:
 		input: '%cwd%/templates/presenter/presenter.latte'
-		output: '/{$namespace}\UI\{$name|firstUpper}\{$name|firstUpper}Presenter.php'
+		output: '{$namespace}/UI/{$name|firstUpper}/{$name|firstUpper}Presenter.php'
 	presenter_template:
 		input: '%cwd%/templates/presenter/template.latte'
-		output: '/UI/{$name|firstUpper}/Templates/default.latte'
+		output: 'UI/{$name|firstUpper}/Templates/default.latte'
