@@ -33,7 +33,7 @@ final class InitCommand extends Command
 		// Inputs
 		/** @var string $inputDirectory */
 		$inputDirectory = (new TextPrompt(
-			label: 'What output directory do you want to use?',
+			label: 'What application directory do you want to use?',
 			default: 'src',
 			required: true
 		))->prompt();
