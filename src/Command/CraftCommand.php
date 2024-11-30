@@ -47,7 +47,7 @@ final class CraftCommand extends BaseCommand
 
 		if (Validators::empty($inputKey)) {
 			/** @var string $inputKey */
-			$inputKey = (new TextPrompt(label: 'What data structure you want to craft?', required: true))->prompt();
+			$inputKey = (new TextPrompt(label: 'What data structure do you want to craft?', required: true))->prompt();
 		}
 
 		/** @var string $inputScope */

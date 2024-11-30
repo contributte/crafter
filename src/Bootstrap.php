@@ -4,6 +4,7 @@ namespace Contributte\Crafter;
 
 use Contributte\Crafter\Command\CraftCommand;
 use Contributte\Crafter\Command\GenerateCommand;
+use Contributte\Crafter\Command\InitCommand;
 use Contributte\Crafter\DI\BetterContainer;
 use Contributte\Crafter\Template\TemplateRenderer;
 use Contributte\Crafter\Worker\Crafter\CrafterWorker;
@@ -36,6 +37,7 @@ final class Bootstrap
 		$application = new Application('Crafter', 'magic');
 		$application->add($container->createInstance(CraftCommand::class));
 		$application->add($container->createInstance(GenerateCommand::class));
+		$application->add($container->createInstance(InitCommand::class));
 
 		return $application;
 	}
