@@ -48,7 +48,7 @@ final class GenerateCommand extends BaseCommand
 		if (Validators::empty($inputTemplate)) {
 			/** @var string $inputTemplate */
 			$inputTemplate = (new SelectPrompt(
-				label: 'What output directory do you want to use?',
+				label: 'What project template do you want to use?',
 				options: [
 					'nella' => 'Nella project',
 					'nella-mini' => 'Nella (mini) project',
