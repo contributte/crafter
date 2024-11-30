@@ -9,7 +9,7 @@ readonly class {$ctx->class->className}
 
 	public function __construct(
 		{foreach $ctx->struct->fields as $field}
-		public {$field->type} ${$field->name};
+		public {$field->type} ${$field->name},
 		{/foreach}
 	) {
 	}
