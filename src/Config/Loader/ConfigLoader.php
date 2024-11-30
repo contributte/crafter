@@ -209,7 +209,7 @@ final class ConfigLoader
 						// E.q.: null -> [default]
 						$scopes = explode('+', $matches[1] ?? 'default');
 
-						// Input (@regex https://regex101.com/r/8EKFyD/1)
+						// Input (@regex https://regex101.com/r/SHY8bs/1)
 						// E.q.: presenter/presenter.latte [resolver: latte, path: presenter/presenter.latte]
 						// E.q.: raw://presenter/presenter.latte [resolver: raw, path: presenter/presenter.latte]
 						$inputMatch = Strings::match($crafter['input'], '#^(?:(?P<schema>\w+):\/\/)?(?P<path>.+)$#') ?? throw new LogicalException(sprintf('Invalid input format "%s"', $crafter['input']));
@@ -219,7 +219,7 @@ final class ConfigLoader
 							vars: []
 						);
 
-						// Output (@regex https://regex101.com/r/8EKFyD/1)
+						// Output (@regex https://regex101.com/r/SHY8bs/1)
 						// E.q.: presenter/presenter.latte [resolver: latte, path: presenter/presenter.latte]
 						// E.q.: raw://presenter/presenter.latte [resolver: raw, path: presenter/presenter.latte]
 						$outputMatch = Strings::match($crafter['output'], '#^(?:(?P<schema>\w+):\/\/)?(?P<path>.+)$#') ?? throw new LogicalException(sprintf('Invalid output format "%s"', $crafter['output']));

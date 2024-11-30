@@ -32,29 +32,40 @@ final class PhpResolver implements ResolverInterface
 	): void
 	{
 		// Resolve class (use latte to replace placeholders)
-		// E.q.: {$namespace}\UI\{$name}Presenter.php -> MyApp\UI\HomepagePresenter.php
+		// - Do: {$namespace}/UI/{$name}Presenter.php -> MyApp/UI/HomepagePresenter.php
+		// - Do: /MyApp/UI/HomepagePresenter.php -> MyApp/UI/HomepagePresenter.php
 		$resolvedFile = $this->templateRenderer->render($crafterConfig->output->path, [
 			'namespace' => $crafterContext->craftingConfig->app->namespace,
 			'name' => $structureConfig->name,
 		]);
+		$resolvedFile = ltrim($resolvedFile, '\/');
+
+		// Resolve class
+		// - Do: MyApp/UI/HomepagePresenter.php -> MyApp\UI\HomepagePresenter
+		// - Do: MyApp\UI\HomepagePresenter.php -> MyApp\UI\HomepagePresenter
+		// - Do: MyApp\UI\HomepagePresenter -> MyApp\UI\HomepagePresenter
+		$resolvedClass = Strings::replace($resolvedFile, '#\/#', '\\');
+		$resolvedClass = Strings::replace($resolvedClass, '#\.php$#', '');
 
 		// Resolve classname
-		// E.q. MyApp\UI\HomepagePresenter.php -> MyApp\\UI\\HomepagePresenter
-		$resolvedClassName = Strings::replace($resolvedFile, '#\.php$#', '');
-		$resolvedClassName = Classes::getClassName($resolvedClassName);
+		// - Do: MyApp\UI\HomepagePresenter -> HomepagePresenter
+		$resolvedClassName = Classes::getClassName($resolvedClass);
 
 		// Resolve namespace
-		// E.q. MyApp\UI\HomepagePresenter -> MyApp\UI
-		$resolvedNamespace = Classes::getNamespace($resolvedFile);
+		// - Do: MyApp\UI\HomepagePresenter -> MyApp\UI
+		$resolvedNamespace = Classes::getNamespace($resolvedClass);
 
 		// Resolve namespace
-		// E.q. MyApp\UI\HomepagePresenter -> MyApp
-		$resolvedRootNamespace = Classes::getRootNamespace($resolvedFile);
+		// - Do: MyApp\UI\HomepagePresenter -> MyApp
+		$resolvedRootNamespace = Classes::getRootNamespace($resolvedNamespace);
 
 		// Resolve filename
-		// E.q. MyApp\UI\HomepagePresenter.php -> UI/HomepagePresenter
+		// - Do1: MyApp\UI\HomepagePresenter.php -> MyApp/UI/HomepagePresenter
+		// - Do1: UI\HomepagePresenter.php -> UI/HomepagePresenter
+		// - Do2: \MyApp\UI\HomepagePresenter.php -> /Myapp/UI/HomepagePresenters (slash at the beginning)
+		// - Do2: \MyApp\UI\HomepagePresenter.php -> UI/HomepagePresenter
 		$resolvedFilename = Strings::replace($resolvedFile, '#\\\#', '/');
-		$resolvedFilename = Strings::replace($resolvedFilename, '#^' . $crafterContext->craftingConfig->app->namespace . '/#', '');
+		$resolvedFilename = Strings::replace($resolvedFilename, '#^\/?' . $crafterContext->craftingConfig->app->namespace . '/#', '');
 
 		$context = new TemplateContext(
 			class: new ClassContext(
