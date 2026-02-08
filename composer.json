@@ -27,13 +27,13 @@
     "latte/latte": "^3.0.18",
     "symfony/console": "^7.1.5",
     "psr/log": "^3.0.2",
-    "laravel/prompts": "^0.3.2"
+    "laravel/prompts": "~0.3.2"
   },
   "require-dev": {
-    "contributte/qa": "^0.4.0",
-    "contributte/tester": "^0.4.0",
+    "contributte/phpstan": "~0.3.0",
+    "contributte/qa": "~0.4.0",
+    "contributte/tester": "~0.4.0",
     "mockery/mockery": "^1.5.0",
-    "contributte/phpstan": "^0.3.0",
     "humbug/box": "^4.6.2"
   },
   "autoload": {
