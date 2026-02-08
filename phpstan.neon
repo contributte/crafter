@@ -1,8 +1,5 @@
 includes:
-	- vendor/phpstan/phpstan-deprecation-rules/rules.neon
-	- vendor/phpstan/phpstan-nette/extension.neon
-	- vendor/phpstan/phpstan-nette/rules.neon
-	- vendor/phpstan/phpstan-strict-rules/rules.neon
+	- vendor/contributte/phpstan/phpstan.neon
 
 parameters:
 	level: 9
@@ -19,6 +16,8 @@ parameters:
 		- bin
 
 	ignoreErrors:
+		- '#Call to deprecated method add\(\) of class Symfony\\Component\\Console\\Application#'
+		- '#Method Contributte\\Crafter\\Config\\Loader\\ConfigLoader::processConfig\(\) should return#'
 
 	typeAliases:
 		ConfigShape: """
