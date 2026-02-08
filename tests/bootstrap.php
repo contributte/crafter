@@ -7,5 +7,4 @@ if (@!include __DIR__ . '/../vendor/autoload.php') {
 	exit(1);
 }
 
-// Configure environment
 Environment::setup(__DIR__);
