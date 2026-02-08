@@ -33,7 +33,7 @@ output:
 					vars: []
 				output:
 					resolver: php
-					path: "/{$namespace}\\UI\\{$name|firstUpper}\\{$name|firstUpper}Presenter.php"
+					path: "{$namespace}/UI/{$name|firstUpper}/{$name|firstUpper}Presenter.php"
 					vars: []
 				vars: []
 			presenter_template:
@@ -49,7 +49,7 @@ output:
 					vars: []
 				output:
 					resolver: latte
-					path: "/UI/{$name|firstUpper}/Templates/default.latte"
+					path: "UI/{$name|firstUpper}/Templates/default.latte"
 					vars: []
 				vars: []
 		scopes: []
