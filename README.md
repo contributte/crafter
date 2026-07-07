@@ -18,7 +18,7 @@
 Website 🚀 <a href="https://contributte.org">contributte.org</a> | Contact 👨🏻‍💻 <a href="https://f3l1x.io">f3l1x.io</a> | Twitter 🐦 <a href="https://twitter.com/contributte">@contributte</a>
 </p>
 
-Crafter is a yummy opinionated PHP generator for web masters.
+Crafter is an opinionated PHP generator for creating project files from NEON definitions and templates.
 
 ## Versions
 
@@ -60,7 +60,7 @@ vendor/bin/crafter craft
 
 ## Configuration
 
-Under construction.
+Configuration lives in `crafter.neon` in your project root. Define data structures under `data`; commands can target a specific data key with `--data` and a generation scope with `--scope`.
 
 ## Usage
 
